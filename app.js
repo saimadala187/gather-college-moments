@@ -27,7 +27,11 @@ app.use(express.static("public"));
 app.use(session({
   secret: "my scret key buddy.",
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie:{
+    //sameSite:'none',
+    secure:false
+  }
 }));
 
 app.use(passport.initialize());
