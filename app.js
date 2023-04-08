@@ -144,6 +144,7 @@ app.get("/logout", function(req, res) {
 
 app.post("/submit",function(req,res){
  const userSecret=req.body.secret;
+ console.log(req);
  console.log(req.user, userSecret);
  User.findById(req.user.id).then(function(userFind){
    if(userFind){
