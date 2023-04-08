@@ -121,6 +121,7 @@ app.get('/auth/google/secrets',
   });
 
   app.get("/submit", function(req, res) {
+    console.log("get submit req-------------------------------------------------------------------------",req);
     if (req.isAuthenticated()) {
       res.render("submit");
     } else {
@@ -144,8 +145,8 @@ app.get("/logout", function(req, res) {
 
 app.post("/submit",function(req,res){
  const userSecret=req.body.secret;
- console.log(req);
- console.log(req.user, userSecret);
+ //console.log(req);
+ console.log(req.user.id, userSecret);
  User.findById(req.user.id).then(function(userFind){
    if(userFind){
      userFind.secret=userSecret;
