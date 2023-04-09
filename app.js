@@ -59,10 +59,11 @@ const User = mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
+
 passport.serializeUser(function(user, cb) {
   process.nextTick(function() {
     cb(null, { id: user.id, username: user.username });
-    console.log("serilize ########################",user);
+    //console.log("serilize ########################",user);
   });
 });
 
@@ -70,7 +71,7 @@ passport.deserializeUser(function(user, cb) {
   // process.nextTick(function() {
   //   return cb(null, user);
   // });
-  console.log("id*************************************************************",user);
+  //console.log("id*************************************************************",user);
   User.findById(user.id).then(function(err, userd){
     process.nextTick(function() {
       return cb(null, user);
@@ -123,7 +124,7 @@ User.find({"secret":{$ne:null}}).then(function(foundUsers){
     res.render("secrets",{usersWithSecrets:foundUsers})
   }
 }).catch(function(err){
-  console.log(err);
+  console.log("secret error get",err);
 });
 
 });
@@ -136,7 +137,7 @@ app.get('/auth/google/secrets',
   });
 
   app.get("/submit", function(req, res) {
-    console.log("get submit req-------------------------------------------------------------------------",req);
+    //console.log("get submit req-------------------------------------------------------------------------",req);
     if (req.isAuthenticated()) {
       res.render("submit");
     } else {
@@ -215,6 +216,7 @@ app.post("/login", function(req, res) {
       console.log(err);
     } else {
       passport.authenticate("local")(req, res, function() {
+        //console.log("login auth",req);
         res.redirect("/secrets");
       });
     }
