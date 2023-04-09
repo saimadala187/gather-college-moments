@@ -64,9 +64,16 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(user, cb) {
-  process.nextTick(function() {
-    return cb(null, user);
-  });
+  // process.nextTick(function() {
+  //   return cb(null, user);
+  // });
+  User.findById(user.id).then(function(err, userd){
+    process.nextTick(function() {
+      return cb(null, user);
+      });
+  }).catch(function(err){
+    console.log("deser err",err);
+  })
 });
 
 ///oauth cofnig//
