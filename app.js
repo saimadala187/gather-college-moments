@@ -59,14 +59,25 @@ const User = mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+passport.serializeUser(function(user, cb) {
+  process.nextTick(function() {
+    cb(null, { id: user.id, username: user.username });
+    console.log("serilize ########################",user);
+  });
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id).then(function(err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(function(user, cb) {
+  // process.nextTick(function() {
+  //   return cb(null, user);
+  // });
+  console.log("id*************************************************************",user);
+  User.findById(user.id).then(function(err, userd){
+    process.nextTick(function() {
+      return cb(null, user);
+      });
+  }).catch(function(err){
+    console.log("deser err",err);
+  })
 });
 
 ///oauth cofnig//
