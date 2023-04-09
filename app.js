@@ -62,19 +62,19 @@ passport.use(User.createStrategy());
 
 passport.serializeUser(function(user, cb) {
   process.nextTick(function() {
-    cb(null, { id: user.id, username: user.username });
-    //console.log("serilize ########################",user);
+    cb(null,  user.id);
+    console.log("serilize ########################",user);
   });
 });
 
-passport.deserializeUser(function(user, cb) {
+passport.deserializeUser(function(id, cb) {
   // process.nextTick(function() {
   //   return cb(null, user);
   // });
-  //console.log("id*************************************************************",user);
-  User.findById(user.id).then(function(err, userd){
+  console.log("id*************************************************************",id);
+  User.findById(id).then(function(err, userd){
     process.nextTick(function() {
-      return cb(null, user);
+      return cb(null, id);
       });
   }).catch(function(err){
     console.log("deser err",err);
@@ -161,9 +161,9 @@ app.get("/logout", function(req, res) {
 
 app.post("/submit",function(req,res){
  const userSecret=req.body.secret;
- //console.log(req);
- console.log(req.user.id, userSecret);
- User.findById(req.user.id).then(function(userFind){
+ console.log(req);
+ console.log(req.user, userSecret);
+ User.findById(req.user).then(function(userFind){
    if(userFind){
      userFind.secret=userSecret;
      userFind.save().then(function(){
