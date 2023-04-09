@@ -27,8 +27,8 @@ app.use(express.static("public"));
 
 app.use(session({
   secret: "my scret key buddy.",
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   //store: new MongoStore({mongooseConnection: mongoose.connection}),
   cookie:{
     //sameSite:'none',
