@@ -33,11 +33,12 @@ app.use(session({
     //sameSite:'none',
     secure:false
   }
+  
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
+ app.set("trust proxy", 1);
 
 mongoose.connect("mongodb+srv://saimadala1872:Madala187@cluster0.wyspesa.mongodb.net/userDB", {
   useNewUrlParser: true
