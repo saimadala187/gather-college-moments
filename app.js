@@ -28,6 +28,7 @@ app.use(session({
   secret: "my scret key buddy.",
   resave: false,
   saveUninitialized: false,
+  //store: new MongoStore({mongooseConnection: mongoose.connection}),
   cookie:{
     //sameSite:'none',
     secure:false
@@ -57,23 +58,15 @@ userSchema.plugin(findOrCreate);
 const User = mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
-passport.serializeUser(function(user, cb) {
-  process.nextTick(function() {
-    cb(null, { id: user.id, username: user.username });
-  });
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
 });
 
-passport.deserializeUser(function(user, cb) {
-  // process.nextTick(function() {
-  //   return cb(null, user);
-  // });
-  User.findById(user.id).then(function(err, userd){
-    process.nextTick(function() {
-      return cb(null, user);
-      });
-  }).catch(function(err){
-    console.log("deser err",err);
-  })
+passport.deserializeUser(function(id, done) {
+  User.findById(id).then(function(err, user) {
+    done(err, user);
+  });
 });
 
 ///oauth cofnig//
@@ -192,6 +185,7 @@ app.post("/register", function(req, res) {
       res.redirect("/register");
     } else {
       passport.authenticate("local")(req, res, function() {
+        console.log("register authenticated");
         res.redirect("/secrets");
       });
     }
