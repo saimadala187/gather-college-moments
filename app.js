@@ -27,8 +27,8 @@ app.use(express.static("public"));
 
 app.use(session({
   secret: "my scret key buddy.",
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   //store: new MongoStore({mongooseConnection: mongoose.connection}),
   cookie:{
     //sameSite:'none',
@@ -222,8 +222,8 @@ app.post("/login", function(req, res) {
     } else {
       passport.authenticate("local")(req, res, function() {
         //console.log("login auth",req);
-        req.session.save(() => {
-     res.redirect('/secrets');
+      req.session.save(() => {
+      res.redirect('/secrets');
    });
         // res.redirect("/secrets");
       });
