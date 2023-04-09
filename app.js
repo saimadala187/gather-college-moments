@@ -16,6 +16,7 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate=require("mongoose-findorcreate");
+//const MongoStore = require('connect-mongo');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -33,7 +34,10 @@ app.use(session({
     //sameSite:'none',
     secure:false
   }
-  
+  // store: MongoStore.create({
+  //           mongoUrl: 'mongodb+srv://saimadala1872:Madala187@cluster0.wyspesa.mongodb.net',
+  //       })
+
 }));
 
 app.use(passport.initialize());
@@ -218,7 +222,10 @@ app.post("/login", function(req, res) {
     } else {
       passport.authenticate("local")(req, res, function() {
         //console.log("login auth",req);
-        res.redirect("/secrets");
+        req.session.save(() => {
+     res.redirect('/secrets');
+   });
+        // res.redirect("/secrets");
       });
     }
   })
