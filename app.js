@@ -60,21 +60,21 @@ const User = mongoose.model("User", userSchema);
 passport.use(User.createStrategy());
 
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function(user, done) {
   process.nextTick(function() {
-    cb(null,  user.id);
+    done(null,  user.id);
     console.log("serilize ########################",user);
   });
 });
 
-passport.deserializeUser(function(id, cb) {
+passport.deserializeUser(function(id, done) {
   // process.nextTick(function() {
   //   return cb(null, user);
   // });
   console.log("id*************************************************************",id);
   User.findById(id).then(function(err, userd){
     process.nextTick(function() {
-      return cb(null, id);
+      return done(null, id);
       });
   }).catch(function(err){
     console.log("deser err",err);
@@ -88,10 +88,10 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:3000/auth/google/secrets",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
-  function(accessToken, refreshToken, profile, cb) {
+  function(accessToken, refreshToken, profile, done) {
     //console.log(profile);
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
+      return done(err, user);
     });
   }
 ));
