@@ -5,6 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const ejs = require("ejs");
+const mongoStore=require("connect-mongo");
 //const encrypt=require("mongoose-encryption")  // aes encryption
 //const md5=require("md5"); //level 3
 // const bcrypt=require("bcrypt");
@@ -30,6 +31,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   //store: new MongoStore({mongooseConnection: mongoose.connection}),
+  store: mongoStore.create({
+    mongoUrl:"mongodb+srv://saimadala1872:Madala187@cluster0.wyspesa.mongodb.net/userDB",
+  }),
   cookie:{
     //sameSite:'none',
     secure:false
