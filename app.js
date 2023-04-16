@@ -109,7 +109,7 @@ passport.use(new GoogleStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     //console.log(profile);
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    User.findOrCreate({ username: profile.emails[0].value, googleId: profile.id }, function (err, user) {
       return done(err, user);
     });
   }
@@ -129,7 +129,7 @@ app.get("/login", function(req, res) {
 });
 
 app.get('/auth/google',
-  passport.authenticate('google', { scope: ["profile"] }));
+  passport.authenticate('google', { scope: ['profile',"email"] }));
 
 app.get("/secrets", function(req, res) {
   // if (req.isAuthenticated()) {
