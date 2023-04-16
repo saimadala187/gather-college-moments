@@ -1,5 +1,7 @@
 <%- include('partials/header') %>
-
+<%if (parentPage.length>0){%>
+<h2 style="text-align:center; margin-top:20px;">Please Login first to see Secret Messages</h2>
+<% }%>
 <div class="container mt-5">
   <h1>Login</h1>
 
@@ -7,7 +9,6 @@
     <div class="col-sm-8">
       <div class="card">
         <div class="card-body">
-
           <!-- Makes POST request to /login route -->
           <form action="/login" method="POST">
             <div class="form-group">

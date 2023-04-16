@@ -125,27 +125,27 @@ app.get("/register", function(req, res) {
 });
 
 app.get("/login", function(req, res) {
-  res.render("login");
+  res.render("login",{parentPage:""});
 });
 
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile',"email"] }));
 
 app.get("/secrets", function(req, res) {
-  // if (req.isAuthenticated()) {
-  //   res.render("secrets");
-  // } else {
-  //   res.redirect("/login");
-  // }
-
-User.find({"secret":{$ne:null}}).then(function(foundUsers){
+  if (req.isAuthenticated()) {
+  User.find({"secret":{$ne:null}}).then(function(foundUsers){
   if(foundUsers){
     res.render("secrets",{usersWithSecrets:foundUsers})
   }
 }).catch(function(err){
   console.log("secret error get",err);
 });
-
+//res.render("secrets");
+}
+else {
+  //console.log(req.url);
+  res.render("login",{parentPage:req.url});
+}
 });
 
 app.get('/auth/google/secrets',
