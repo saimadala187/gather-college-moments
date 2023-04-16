@@ -60,7 +60,22 @@ userSchema.plugin(findOrCreate);
 //userSchema.plugin(encrypt, { secret: process.env.SECRET,encryptedFields: ["password"] }); // Aes encryption  , hassing is btr so remove this .
 
 const User = mongoose.model("User", userSchema);
+//user index from git hub //
+User.collection.indexExists({ "username" : 1 }, function(err, results){
+  console.log(results);
+  if ( results === true) {
+    // Dropping an Index in MongoDB
+    User.collection.dropIndex( { "username" : 1 } , function(err, res) {
+        if (err) {
+            console.log('Error in dropping index!', err);
+        }
+    });
+  } else {
+    console.log("Index doesn't exisit!");
+  }
+});
 
+//end//
 passport.use(User.createStrategy());
 
 
