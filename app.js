@@ -89,7 +89,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "https://lazy-blue-viper-shoe.cyclic.app/secrets",
+    callbackURL: "https://lazy-blue-viper-shoe.cyclic.app/auth/google/secrets",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, done) {
@@ -165,19 +165,18 @@ app.get("/logout", function(req, res) {
 
 app.post("/submit",function(req,res){
  const userSecret=req.body.secret;
- console.log(req);
- console.log(req.user, userSecret);
+ //console.log(req);
+ //console.log(req.user, userSecret);
  User.findById(req.user).then(function(userFind){
    if(userFind){
-     console.log(userFind.secret,"ddas",userFind.id);
      User.updateOne({_id:userFind.id},
      {$push: {secret:userSecret}}).then(function(){
-       console.log("success",userFind.secret);
+       //console.log("success",userFind.secret);
      }).catch(function(err){
        console.log(err);
      });
 
-     console.log(userFind.secret);
+     //console.log(userFind.secret);
      //userFind.secret=userSecret;
      userFind.save().then(function(){
        console.log(userFind.secret,"before rend");
