@@ -48,7 +48,7 @@ mongoose.connect("mongodb+srv://saimadala1872:Madala187@cluster0.wyspesa.mongodb
 });
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, index:false, unique:true,sparse:true},
+  email: String,
   password: String,
   googleId:String,
   secret:[String]
