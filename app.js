@@ -35,13 +35,8 @@ app.use(session({
     mongoUrl:"mongodb+srv://saimadala1872:Madala187@cluster0.wyspesa.mongodb.net/userDB",
   }),
   cookie:{
-    //sameSite:'none',
     secure:false
   }
-  // store: MongoStore.create({
-  //           mongoUrl: 'mongodb+srv://saimadala1872:Madala187@cluster0.wyspesa.mongodb.net',
-  //       })
-
 }));
 
 app.use(passport.initialize());
@@ -56,7 +51,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   googleId:String,
-  secret:String
+  secret:[String]
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -72,7 +67,7 @@ passport.use(User.createStrategy());
 passport.serializeUser(function(user, done) {
   process.nextTick(function() {
     done(null,  user.id);
-    console.log("serilize ########################",user);
+    //console.log("serilize ########################",user);
   });
 });
 
@@ -80,7 +75,7 @@ passport.deserializeUser(function(id, done) {
   // process.nextTick(function() {
   //   return cb(null, user);
   // });
-  console.log("id*************************************************************",id);
+  //console.log("id*************************************************************",id);
   User.findById(id).then(function(err, userd){
     process.nextTick(function() {
       return done(null, id);
@@ -94,7 +89,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/secrets",
+    callbackURL: "https://lazy-blue-viper-shoe.cyclic.app/secrets",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, done) {
@@ -174,8 +169,18 @@ app.post("/submit",function(req,res){
  console.log(req.user, userSecret);
  User.findById(req.user).then(function(userFind){
    if(userFind){
-     userFind.secret=userSecret;
+     console.log(userFind.secret,"ddas",userFind.id);
+     User.updateOne({_id:userFind.id},
+     {$push: {secret:userSecret}}).then(function(){
+       console.log("success",userFind.secret);
+     }).catch(function(err){
+       console.log(err);
+     });
+
+     console.log(userFind.secret);
+     //userFind.secret=userSecret;
      userFind.save().then(function(){
+       console.log(userFind.secret,"before rend");
        res.redirect("secrets")
      }).catch(function(err){
        console.log(err);

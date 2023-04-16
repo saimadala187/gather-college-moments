@@ -14,3 +14,34 @@ body {
   color: #fff;
   background-color: #000;
 }
+.navbar {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    letter-spacing: 5px;
+}
+.navbar-nav  li a:hover {
+    color: #1abc9c !important;
+}
+.row-dir{
+  flex-direction:row;
+}
+.row-dir li{
+  padding: 5px;
+}
+.row-dir li a{
+    font-size: 16px;
+    letter-spacing: initial;}
+
+.bg-change{
+  background-color: #E4E9FD;
+background-image: -webkit-linear-gradient(65deg, #A683E3 50%, #E4E9FD 50%);
+min-height: 1000px;
+font-family: 'helvetica neue';
+}
+.menu-sec{
+  background-color: #E4E9FD;
+}
